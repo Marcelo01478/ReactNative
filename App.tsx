@@ -1,24 +1,22 @@
 import React from 'react';
-import { Text, View, StyleSheet} from 'react-native';
-import styled from 'styled-components/native';
+import { ThemeProvider } from 'styled-components';
+import { useFonts, Roboto_700Bold, Roboto_500Medium, Roboto_400Regular } from '@expo-google-fonts/roboto';
+import { Home }  from './src/screens/Home';
+import theme  from './src/theme';
+import { Loading } from './src/components/loading';
+
+
 
 export default function App() {
+
+  const [fontsLoaded ] = useFonts({ Roboto_700Bold, Roboto_500Medium, Roboto_400Regular })
+
+
   return (
-  
-      <Container>
-        <Title>BBBbbb</Title>
-        <Title>AAAA</Title>
-      </Container>
-   
+    <ThemeProvider theme={theme}>
+      { fontsLoaded ? <Home /> : <Loading />}
+    </ThemeProvider>
+    
   );
 }
 
-const Container = styled.View` 
-  flex: 1;
-  background-color: blue;
-  justify-content: center; 
-  align-items: center;
-  `;
-const Title = styled.Text`
-font-size:32px;
-`
