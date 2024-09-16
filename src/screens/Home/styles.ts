@@ -15,10 +15,17 @@ export const Content = styled.View`
     
 `;
 
+export const ContainerList = styled.View`
+    flex: 1;
+    width: 100%;
+    
+`;
+
+
 export const ContainerBanners = styled.View`
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-   
+    margin: 24px 0px;
 `;

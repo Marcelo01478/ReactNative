@@ -6,9 +6,14 @@ import {
         Name, 
         Tag, 
         ContainerBottom, 
-        Date, Value, TagTitle, CategoryTitle, CardTypes } from './styles';
+        Date, 
+        Value, 
+        TagTitle, 
+        CategoryTitle, 
+        CardTypes }
+         from './styles';
 
-interface TransactionCardPorps {
+export interface TransactionCardProps {
     name: string;
     type: CardTypes;
     value: string;
@@ -16,13 +21,12 @@ interface TransactionCardPorps {
     date: string;
 }
 
-export function TransactionCard({name, type, value, category, date }: TransactionCardPorps){
+export function TransactionCard({name, type, value, category, date }: TransactionCardProps){
 
     const typeName = type === "up" ? "Entrada" : "Saída"
 
     return(
         < Container>
-    
             <ContainerTop>
                 <Name>{name}</Name>
                 <Tag type={type}>
@@ -34,7 +38,6 @@ export function TransactionCard({name, type, value, category, date }: Transactio
                 <CategoryTitle>{category}</CategoryTitle>
                 <Date>{date}</Date>
             </ContainerBottom>
-            
         </Container>
     )
 }
