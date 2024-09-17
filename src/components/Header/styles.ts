@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 import LogoMyApp from "../../assets/images/logoMyApp.png"
 
-export type HeaderType = { type?: 'up' | 'down' };
+export type HeaderType = { type: 'up' | 'down' };
 
 export const Container = styled.View<HeaderType>`
     width: 100%;

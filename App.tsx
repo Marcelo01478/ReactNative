@@ -4,6 +4,7 @@ import { useFonts, Roboto_700Bold, Roboto_500Medium, Roboto_400Regular } from '@
 import { Home }  from './src/screens/Home';
 import theme  from './src/theme';
 import { Loading } from './src/components/loading';
+import { RegisterScreen } from './src/screens/RegisterScreen';
 
 
 
@@ -14,7 +15,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      { fontsLoaded ? <Home /> : <Loading />}
+      { fontsLoaded ? <RegisterScreen /> : <Loading />}
     </ThemeProvider>
     
   );

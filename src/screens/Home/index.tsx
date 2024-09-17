@@ -78,7 +78,7 @@ export function Home () {
               category={item.category}
               date={item.date}
             />}
-            showsVerticalScrollIndicator={true}
+            showsVerticalScrollIndicator={false}
           />
         </ContainerList>
       </Content>
