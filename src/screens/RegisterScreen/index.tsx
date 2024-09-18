@@ -1,9 +1,10 @@
 import React, { useState} from 'react';
+import { Modal } from 'react-native';
 import { Header } from '../../components/Header';
 import { SmallButton } from '../../components/SmallButton';
 import { Input } from '../../components/Input';
 import { CategorySelectbutton } from '../../components/CategorySelectbutton';
-import { SmaLLButtonTypes } from '../../components/SmallButton/styles';
+import { SelectModal } from '../SelectModal';
 import { 
   Container, 
   ContainerButtons, 
@@ -16,18 +17,25 @@ import {
 } from './styles';
 
 
-
-
 type TypeTransactions = "up" | "down";
 
 export function RegisterScreen() {
 
-  const [selectType, setselectType] = useState<TypeTransactions>('up')
+  const [selectType, setselectType] = useState<TypeTransactions>('up');
+  const [category ,setCategory] = useState({key: "categoria", name: "Selecione a categoria"})
+  const [ isOpenModal, setIsOpenModal] = useState(false);
 
   function handlePress(type: TypeTransactions){
     setselectType(type)
   }
 
+  function handleOpenModal () {
+    setIsOpenModal(true);
+  }
+
+  function handleCloseModal () {
+    setIsOpenModal(false);
+  }
   
   return (
     <Container>
@@ -45,7 +53,7 @@ export function RegisterScreen() {
           <Title>Dados da transação</Title>
           <Input />
 
-          {selectType === "down" && <CategorySelectbutton /> }
+          {selectType === "down" && <CategorySelectbutton title={category.name} onPress={handleOpenModal}/>}
         </FormContainer>
 
         <ContentButton>
@@ -53,8 +61,11 @@ export function RegisterScreen() {
             <ButtonTitle>Confirmar</ButtonTitle>
           </Button>
         </ContentButton>
-       
       </Content>
+
+      <Modal visible={isOpenModal}>
+        <SelectModal setCategory={setCategory} close={handleCloseModal} />
+      </Modal>
     </Container>
 
   );

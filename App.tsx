@@ -8,6 +8,7 @@ import { RegisterScreen } from './src/screens/RegisterScreen';
 
 
 
+
 export default function App() {
 
   const [fontsLoaded ] = useFonts({ Roboto_700Bold, Roboto_500Medium, Roboto_400Regular })
@@ -15,7 +16,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      { fontsLoaded ? <RegisterScreen /> : <Loading />}
+      { fontsLoaded ? < RegisterScreen /> : <Loading />}
     </ThemeProvider>
     
   );

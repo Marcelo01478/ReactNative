@@ -9,7 +9,7 @@ interface CategorySelectbuttonPorps {
 
 export function CategorySelectbutton({title, onPress}:  CategorySelectbuttonPorps){
     return(
-        < Container>
+        < Container onPress={onPress}>
             <Title>{title}</Title>
             <Icon/>   
         </Container>
