@@ -1,24 +1,23 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { useFonts, Roboto_700Bold, Roboto_500Medium, Roboto_400Regular } from '@expo-google-fonts/roboto';
-import { Home }  from './src/screens/Home';
-import theme  from './src/theme';
+import  theme   from './src/theme';
 import { Loading } from './src/components/loading';
-import { RegisterScreen } from './src/screens/RegisterScreen';
-
-
+import { NavigationContainer } from '@react-navigation/native';
+import { AppRoutes } from './src/routes/app.routes';
 
 
 export default function App() {
 
-  const [fontsLoaded ] = useFonts({ Roboto_700Bold, Roboto_500Medium, Roboto_400Regular })
+  const [fontsLoaded ] = useFonts({ Roboto_700Bold, Roboto_500Medium, Roboto_400Regular})
 
-
+ 
   return (
     <ThemeProvider theme={theme}>
-      { fontsLoaded ? < RegisterScreen /> : <Loading />}
-    </ThemeProvider>
-    
+      <NavigationContainer>
+        { fontsLoaded ? <AppRoutes /> : <Loading />} 
+      </NavigationContainer>
+    </ThemeProvider> 
   );
 }
 
