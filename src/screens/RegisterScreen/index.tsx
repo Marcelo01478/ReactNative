@@ -1,9 +1,11 @@
 import React, { useState} from 'react';
-import { Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
+import { FieldValues, useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import { api } from '../../server/api';
 import { Header } from '../../components/Header';
 import { SmallButton } from '../../components/SmallButton';
 import { Input } from '../../components/Input';
-import { FieldValues, useForm } from 'react-hook-form';
 import { CategorySelectbutton } from '../../components/CategorySelectbutton';
 import { SelectModal } from '../SelectModal';
 import { 
@@ -17,18 +19,37 @@ import {
   ButtonTitle
 } from './styles';
 
+
+
 type TypeTransactions = "up" | "down";
+
+type DataType = {
+  name: string;
+  value: number;
+  type: TypeTransactions;
+  category?: string;
+  date: string;
+}
 
 export function RegisterScreen() {
 
-  const [selectType, setselectType] = useState<TypeTransactions>('up');
+  const [selectType, setSelectType] = useState<TypeTransactions>('up');
   const [category ,setCategory] = useState({key: "categoria", name: "Selecione a categoria"})
   const [ isOpenModal, setIsOpenModal] = useState(false);
 
-  const {control, handleSubmit} = useForm();
+  const {control, handleSubmit, reset} = useForm();
+
+  async function postTransactions(data: DataType){
+    try{
+      await api.post("./transactions", data)
+    }catch(erro){
+      Alert.alert("Erro no servidor")
+    }
+    
+  }
 
   function handlePress(type: TypeTransactions){
-    setselectType(type)
+    setSelectType(type)
   }
 
   function handleOpenModal () {
@@ -39,15 +60,35 @@ export function RegisterScreen() {
     setIsOpenModal(false);
   }
 
-  function handleRegister(form: FieldValues) {
-    const data = {
+  function clear(){
+    setSelectType("up");
+    setCategory({key: "categoria", name: "Selecione a categoria"})
+
+
+    reset({
+      name:'',
+      amount:'',
+    })
+  }
+
+  function handleRegister(form: FieldValues){
+
+    const currentDate = format(new Date(), 'dd/MM/yy')
+
+    const data: DataType = {
       name: form.name,
-      amount: form.amount,
-      transactionType: selectType,
+      value: form.amount,
+      type: selectType,
       category: category.key,
+      date: currentDate,
     }
 
-    console.log("data",data);
+    if(category.key !== 'categoria'){
+      data.category = category.key
+    }
+
+    postTransactions(data)
+    clear();    
   }
   
   return (

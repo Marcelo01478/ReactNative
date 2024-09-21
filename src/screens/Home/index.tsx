@@ -1,86 +1,64 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import theme from '../../theme';
+import { formatedValue, getTotalForTypes, } from '../../helpers/formatted';
 import { Total } from '../../components/Total';
 import { Banner } from '../../components/Banner';
 import { Header } from '../../components/Header';
-import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import { Loading } from '../../components/loading';
+import { TransactionCard } from '../../components/TransactionCard';
+import { useFetchTransactions } from '../../hooks/useFetchTransactions';
 import { Container ,ContainerBanners, Content, ContainerList } from './styles';
 
-export type ListCardType = {
-  id: string;
-} & Pick<TransactionCardProps, "name" | "type" | "category" | "date" | "value">
-
-const data: ListCardType[] = [
-  {
-      id:'1',
-      name: 'Salário',
-      type: 'up',
-      value: 'R$6.000,00',
-      date: '05/01/2024',
-  },
-  {
-    id:'2',
-    name: 'Compra do mes',
-    type: 'down',
-    value: 'R$1.000,00',
-    category: 'Alimentação',
-    date: '10/02/2024',
-  },
-  {
-    id:'3',
-    name: 'Conta de Luz',
-    type: 'down',
-    value: 'R$500,00',
-    category: 'Casa',
-    date: '10/03/2024',
-  },
-  {
-    id:'4',
-    name: 'Conta de Luz',
-    type: 'down',
-    value: 'R$500,00',
-    category: 'Casa',
-    date: '10/03/2024',
-  },
-  {
-    id:'5',
-    name: 'Conta de Luz',
-    type: 'down',
-    value: 'R$500,00',
-    category: 'Casa',
-    date: '10/03/2024',
-  },
-]
 
 
 
 export function Home () {
+  const IsFocused = useIsFocused();
+  const { transactions, loading, fetchTransactions} = useFetchTransactions()
+  const { total, totalDown, totalUp } = getTotalForTypes(transactions);
+  
+
+  
+  function renderListTransactions(){
+    return(
+      <ContainerList>
+      <FlatList
+        data={transactions}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => 
+        <TransactionCard
+          name={item.name}
+          type={item.type}
+          value={formatedValue(item.value )}
+          category={item.category}
+          date={item.date}
+        />}
+        showsVerticalScrollIndicator={false}
+      />
+      </ContainerList>
+    )
+
+  }
+
+  useEffect(() => {
+    fetchTransactions();
+  },[IsFocused])
+
   return (
     <Container>
       <Header isHome type={"up"} screenName='MyMoney'/>
 
       <Content>
-        <Total />
+        <Total value={total} />
         <ContainerBanners>
-          <Banner title='Entradas' type='up' value='R$6.000' />
-          <Banner title='Saídas' type='down' value='R$1.000'/>
+          <Banner title='Entradas' type='up' value={totalUp} />
+          <Banner title='Saídas' type='down' value={totalDown} />
         </ContainerBanners>
 
-        <ContainerList>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => 
-            <TransactionCard
-              name={item.name}
-              type={item.type}
-              value={item.value}
-              category={item.category}
-              date={item.date}
-            />}
-            showsVerticalScrollIndicator={false}
-          />
-        </ContainerList>
+        { loading ? <Loading background={theme.COLORS.BACKGROUND} LoadColor={theme.COLORS.PRIMARY}/> : renderListTransactions()}
+
       </Content>
       
     </Container>

@@ -2,10 +2,15 @@ import React from 'react';
 
 import { Container, LoadIndicator  } from './styles';
 
-export function Loading(){
+interface LoadingTypes {
+    background: string;
+    LoadColor: string;
+}
+
+export function Loading({background, LoadColor}: LoadingTypes){
     return(
-        < Container>
-            <LoadIndicator />
+        < Container background={background}>
+            <LoadIndicator LoadColor={LoadColor}/>
         </Container>
     )
 }
